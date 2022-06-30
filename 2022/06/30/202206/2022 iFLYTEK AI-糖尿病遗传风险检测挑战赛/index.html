@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta name="description" content="Code Create Life." />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>2022 iFLYTEK AI-糖尿病遗传风险检测挑战赛 |  Jun&#39;s Blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/logo.png" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-202206/2022 iFLYTEK AI-糖尿病遗传风险检测挑战赛"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  2022 iFLYTEK AI-糖尿病遗传风险检测挑战赛
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/06/30/202206/2022%20iFLYTEK%20AI-%E7%B3%96%E5%B0%BF%E7%97%85%E9%81%97%E4%BC%A0%E9%A3%8E%E9%99%A9%E6%A3%80%E6%B5%8B%E6%8C%91%E6%88%98%E8%B5%9B/" class="article-date">
+  <time datetime="2022-06-30T11:17:28.000Z" itemprop="datePublished">2022-06-30</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%AB%9E%E8%B5%9B/">竞赛</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>一年一度的科大讯飞AI开发者大赛又开始了，好消息是赛道种类多了，坏消息是单个赛题的奖金少了不少 (导致卷的动力不是很大 : )。往年，我们组做的相关赛道主要偏视觉，因此今年想尝试一下<strong>数据挖掘</strong>赛道，学习使用传统机器学习方法去解决实际问题。正好，赛题中有一个医疗相关的题目——<a target="_blank" rel="noopener" href="http://challenge.xfyun.cn/topic/info?type=diabetes&option=ssgy">糖尿病遗传风险检测挑战赛</a>，赛题数据规模较小，拿来练手很不错，名次的话，再说😅。</p>
+<span id="more"></span>
+
+<h3 id="赛题简介"><a href="#赛题简介" class="headerlink" title="赛题简介"></a>赛题简介</h3><p>赛题背景就不多说了，赛题简单概括一下：<strong>基于患者的临床检验数据（结构化），训练算法预测患者是否患有糖尿病。</strong></p>
+<p>赛方提供的数据包含以下字段（9+1）：</p>
+<ul>
+<li><p>编号：标识个体身份的数字；</p>
+</li>
+<li><p>性别：1表示男性，0表示女性；</p>
+</li>
+<li><p>出生年份：出生的年份；</p>
+</li>
+<li><p>体重指数：体重除以身高的平方，单位kg/m2;</p>
+</li>
+<li><p>糖尿病家族史：标识糖尿病的遗传特性，记录家族里面患有糖尿病的家属，分成三种标识，分别是父母有一方患有糖尿病、叔叔或者姑姑有一方患有糖尿病、无记录；</p>
+</li>
+<li><p>舒张压：心脏舒张时，动脉血管弹性回缩时，产生的压力称为舒张压，单位mmHg；</p>
+</li>
+<li><p>口服耐糖量测试：诊断糖尿病的一种实验室检查方法。比赛数据采用120分钟耐糖测试后的血糖值，单位mmol/L；</p>
+</li>
+<li><p>胰岛素释放实验：空腹时定量口服葡萄糖刺激胰岛β细胞释放胰岛素。比赛数据采用服糖后120分钟的血浆胰岛素水平，单位pmol/L；</p>
+</li>
+<li><p>肱三头肌皮褶厚度：在右上臂后面肩峰与鹰嘴连线的重点处，夹取与上肢长轴平行的皮褶，纵向测量，单位cm；</p>
+</li>
+<li><p>患有糖尿病标识：<strong>数据标签</strong>，1表示患有糖尿病，0表示未患有糖尿病。</p>
+</li>
+</ul>
+<p>训练集包含<strong>5070</strong>条数据，测试集1000条，评估指标为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/F1%E5%88%86%E6%95%B0/13864979?fr=aladdin">F1-Score</a>。</p>
+<h3 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h3><p>每条数据总共包含<strong>9项基础特征</strong>，其中<code>编号</code>显然是无关特征，数据的<code>性别</code>分布也较均匀，<code>出生年份</code>可以转化为新特征<code>年龄</code>，通过查询资料，发现其余特征跟临床糖尿病诊断有直接关联，但是<strong>缺失值比较多</strong>，原始数据以<code>0</code>、<code>-1</code>或<code>NaN</code>填充，需考虑缺失值的填充方式。</p>
+<h4 id="Step-1-特征处理"><a href="#Step-1-特征处理" class="headerlink" title="Step 1: 特征处理"></a>Step 1: 特征处理</h4><p>对<code>糖尿病家族史</code>特征做one-hot编码，根据<code>出生年份</code>生成<code>年龄</code>特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">train_path = <span class="string">&#x27;./dataset/diabetes/train.csv&#x27;</span></span><br><span class="line">train_df = pd.read_csv(train_path,encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">test_path = <span class="string">&#x27;./dataset/diabetes/test.csv&#x27;</span></span><br><span class="line">test_df = pd.read_csv(test_path,encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">data = pd.concat([train_df, test_df], axis=<span class="number">0</span>, ignore_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">data[<span class="string">&#x27;age&#x27;</span>] = data[<span class="string">&#x27;出生年份&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(<span class="number">2022</span> - x))</span><br><span class="line">data[<span class="string">&#x27;糖尿病家族史&#x27;</span>] = data[<span class="string">&#x27;糖尿病家族史&#x27;</span>].apply(</span><br><span class="line"><span class="keyword">lambda</span> x:<span class="string">&#x27;叔叔或姑姑有一方患有糖尿病&#x27;</span> <span class="keyword">if</span> x==<span class="string">&#x27;叔叔或者姑姑有一方患有糖尿病&#x27;</span> <span class="keyword">else</span> x)</span><br><span class="line">df = pd.get_dummies(data[<span class="string">&#x27;糖尿病家族史&#x27;</span>]).astype(<span class="string">&#x27;int&#x27;</span>)</span><br><span class="line">data = pd.concat([data,df],axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>对<code>口服耐糖量测试</code>,<code>胰岛素释放实验</code>,<code>肱三头肌皮褶厚度</code>,<code>体重指数</code>做缺失值填充，这里采用<strong>中值填充</strong>（这一步可能不是很合理，先用着）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;口服耐糖量测试&#x27;</span>,<span class="string">&#x27;胰岛素释放实验&#x27;</span>,<span class="string">&#x27;肱三头肌皮褶厚度&#x27;</span>,<span class="string">&#x27;体重指数&#x27;</span>]:</span><br><span class="line">        data[i] = data[i].apply(<span class="keyword">lambda</span> x:np.nan <span class="keyword">if</span> x==<span class="number">0</span> <span class="keyword">or</span> x==-<span class="number">1</span> <span class="keyword">else</span> x)</span><br><span class="line">data.fillna(data.median(axis=<span class="number">0</span>), inplace=<span class="literal">True</span>) </span><br></pre></td></tr></table></figure>
+
+<h4 id="Step-2-特征构造"><a href="#Step-2-特征构造" class="headerlink" title="Step 2: 特征构造"></a>Step 2: 特征构造</h4><p>根据<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/9139ad6428160b4e767f5acfa1c7aa00b52a9dde.html">《中国2型糖尿病防治指南（2017年版）》</a>，糖尿病的诊断标准是具有典型糖尿病症状（烦渴多饮、多尿、多食、不明原因的体重下降）且随机静脉血浆葡萄糖≥11.1mmol/L或空腹静脉血浆葡萄糖≥7.0mmol/L或口服葡萄糖耐量试验（OGTT）负荷后2h血浆葡萄糖≥11.1mmol/L，另外参考<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8F%A3%E6%9C%8D%E8%91%A1%E8%90%84%E7%B3%96%E8%80%90%E9%87%8F%E8%AF%95%E9%AA%8C/10729512?fr=aladdin">百度百科</a>，知<code>口服耐糖量测试</code>（Oral Glucose Tolerance Test， OGTT）在临床中对糖尿病的诊断具有重要参考意义，因此构造以下特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;OGTT&gt;7.1&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">7.1</span>))</span><br><span class="line">data[<span class="string">&#x27;OGTT&gt;8.5&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">8.5</span>))</span><br><span class="line">data[<span class="string">&#x27;OGTT&gt;11.1&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">11.1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>其中，另外,根据2013年临床统计分析结果，不同<code>BMI</code>的患病率有明显差异：$BMI&lt; 25kg/m^2 $者糖尿病患病率为 $7.8%$, $25\le BMI &lt; 30kg/m^2$者患病率为$15.4%$, $BMI \ge 30kg/m^2$者患病率为$21.2%$，构造以下特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;BMI&gt;25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">25</span>))</span><br><span class="line">data[<span class="string">&#x27;30&gt;BMI&gt;=25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">25</span> <span class="keyword">and</span> x &lt; <span class="number">30</span>))</span><br><span class="line">data[<span class="string">&#x27;BMI&gt;=30&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">30</span>))</span><br><span class="line">data[<span class="string">&#x27;BMI&gt;50&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">50</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h3><p>作为Baseline，我选择了<code>随机森林</code>作为基础模型，使用5折交叉训练，参数配置如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;random forest&#x27;</span>:&#123;</span><br><span class="line">    <span class="string">&#x27;n_estimators&#x27;</span>:[<span class="number">50</span>,<span class="number">100</span>,<span class="number">200</span>],</span><br><span class="line">    <span class="string">&#x27;criterion&#x27;</span>:[<span class="string">&#x27;entropy&#x27;</span>]</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>为了方便调参，我使用了<code>sklearn</code>提供的<strong>网格搜索</strong>，通过指定搜索空间，实现对参数组合的遍历。实验代码如下：</p>
+<p>脚本文件<code>diabetes_cls.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd </span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">from</span> cls_trainer <span class="keyword">import</span> ML_Classifier</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> make_scorer</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score,precision_score,f1_score,recall_score</span><br><span class="line"></span><br><span class="line">_AVAIL_CLF = [<span class="string">&#x27;random forest&#x27;</span>]</span><br><span class="line"></span><br><span class="line">params_dict = &#123;</span><br><span class="line">  <span class="string">&#x27;random forest&#x27;</span>:&#123;</span><br><span class="line">    <span class="string">&#x27;n_estimators&#x27;</span>:[<span class="number">50</span>,<span class="number">100</span>,<span class="number">200</span>],</span><br><span class="line">    <span class="string">&#x27;criterion&#x27;</span>:[<span class="string">&#x27;entropy&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">METRICS_CLS = &#123;</span><br><span class="line">    <span class="string">&#x27;Accuracy&#x27;</span>:make_scorer(accuracy_score),</span><br><span class="line">    <span class="string">&#x27;Recall&#x27;</span>:make_scorer(recall_score,average=<span class="string">&#x27;macro&#x27;</span>,zero_division=<span class="number">0</span>),</span><br><span class="line">    <span class="string">&#x27;Precision&#x27;</span>:make_scorer(precision_score,average=<span class="string">&#x27;macro&#x27;</span>,zero_division=<span class="number">0</span>),</span><br><span class="line">    <span class="string">&#x27;F1&#x27;</span>:make_scorer(f1_score,average=<span class="string">&#x27;macro&#x27;</span>,zero_division=<span class="number">0</span>),</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">SETUP_TRAINER = &#123;</span><br><span class="line">  <span class="string">&#x27;target_key&#x27;</span>:<span class="string">&#x27;患有糖尿病标识&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;random_state&#x27;</span>:<span class="number">21</span>,</span><br><span class="line">  <span class="string">&#x27;metric&#x27;</span>:METRICS_CLS,</span><br><span class="line">  <span class="string">&#x27;k_fold&#x27;</span>:<span class="number">5</span>,</span><br><span class="line">  <span class="string">&#x27;scale_flag&#x27;</span>:<span class="literal">False</span>,</span><br><span class="line">  <span class="string">&#x27;sub_col&#x27;</span>:[<span class="string">&#x27;uuid&#x27;</span>,<span class="string">&#x27;label&#x27;</span>],</span><br><span class="line">  <span class="string">&#x27;id_name&#x27;</span>:[<span class="string">&#x27;编号&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fea_encoder</span>(<span class="params">train_df,test_df,label=<span class="literal">None</span></span>):</span><br><span class="line">    </span><br><span class="line">    target = train_df[label]</span><br><span class="line">    <span class="keyword">del</span> train_df[label]</span><br><span class="line">    data = pd.concat([train_df, test_df], axis=<span class="number">0</span>, ignore_index=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    data[<span class="string">&#x27;糖尿病家族史&#x27;</span>] = data[<span class="string">&#x27;糖尿病家族史&#x27;</span>].apply(</span><br><span class="line">        <span class="keyword">lambda</span> x:<span class="string">&#x27;叔叔或姑姑有一方患有糖尿病&#x27;</span> <span class="keyword">if</span> x==<span class="string">&#x27;叔叔或者姑姑有一方患有糖尿病&#x27;</span> <span class="keyword">else</span> x)</span><br><span class="line">    df = pd.get_dummies(data[<span class="string">&#x27;糖尿病家族史&#x27;</span>]).astype(<span class="string">&#x27;int&#x27;</span>)</span><br><span class="line">    data = pd.concat([data,df],axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&#x27;口服耐糖量测试&#x27;</span>,<span class="string">&#x27;胰岛素释放实验&#x27;</span>,<span class="string">&#x27;肱三头肌皮褶厚度&#x27;</span>,<span class="string">&#x27;体重指数&#x27;</span>]:</span><br><span class="line">        data[i] = data[i].apply(<span class="keyword">lambda</span> x:np.nan <span class="keyword">if</span> x==<span class="number">0</span> <span class="keyword">or</span> x==-<span class="number">1</span> <span class="keyword">else</span> x)</span><br><span class="line"></span><br><span class="line">    data.fillna(data.median(axis=<span class="number">0</span>), inplace=<span class="literal">True</span>) </span><br><span class="line">    </span><br><span class="line">    data[<span class="string">&#x27;age&#x27;</span>] = data[<span class="string">&#x27;出生年份&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(<span class="number">2022</span> - x))</span><br><span class="line">    data[<span class="string">&#x27;BMI&gt;25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">25</span>))</span><br><span class="line">    data[<span class="string">&#x27;30&gt;BMI&gt;=25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">25</span> <span class="keyword">and</span> x &lt; <span class="number">30</span>))</span><br><span class="line">    data[<span class="string">&#x27;BMI&gt;=30&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">30</span>))</span><br><span class="line">    data[<span class="string">&#x27;BMI&gt;50&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">50</span>))</span><br><span class="line"></span><br><span class="line">    data[<span class="string">&#x27;OGTT&lt;7.8&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &lt; <span class="number">7.8</span>))</span><br><span class="line">    data[<span class="string">&#x27;OGTT&gt;8.5&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">8.5</span>))</span><br><span class="line">    data[<span class="string">&#x27;OGTT&gt;11.1&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">11.1</span>))</span><br><span class="line">    <span class="comment"># print(data[&#x27;age&#x27;])</span></span><br><span class="line"></span><br><span class="line">    train_df = data[:train_df.shape[<span class="number">0</span>]]</span><br><span class="line">    train_df[label] = target</span><br><span class="line">    test_df = data[train_df.shape[<span class="number">0</span>]:]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> train_df,test_df</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line"></span><br><span class="line">    train_path = <span class="string">&#x27;./dataset/diabetes/train.csv&#x27;</span></span><br><span class="line">    train_df = pd.read_csv(train_path,encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    test_path = <span class="string">&#x27;./dataset/diabetes/test.csv&#x27;</span></span><br><span class="line">    test_df = pd.read_csv(test_path,encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    train_df,test_df = fea_encoder(train_df,test_df,<span class="string">&#x27;患有糖尿病标识&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    fea_list = [f <span class="keyword">for</span> f <span class="keyword">in</span> train_df.columns <span class="keyword">if</span> f <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&#x27;编号&#x27;</span>,<span class="string">&#x27;患有糖尿病标识&#x27;</span>,<span class="string">&#x27;糖尿病家族史&#x27;</span>]] </span><br><span class="line">    test_df = test_df[fea_list]</span><br><span class="line">    train_df = train_df[fea_list + [<span class="string">&#x27;患有糖尿病标识&#x27;</span>]]</span><br><span class="line">    </span><br><span class="line">    save_path = <span class="string">&#x27;./result/diabetes&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(save_path):</span><br><span class="line">        os.makedirs(save_path)</span><br><span class="line">    <span class="keyword">for</span> clf_name <span class="keyword">in</span> _AVAIL_CLF:</span><br><span class="line">      <span class="keyword">import</span> copy</span><br><span class="line">      tmp_train_df = copy.copy(train_df)</span><br><span class="line">      tmp_test_df = copy.copy(test_df)</span><br><span class="line">      <span class="built_in">print</span>(<span class="string">&#x27;********** %s **********&#x27;</span>%clf_name)</span><br><span class="line">      classifier = ML_Classifier(clf_name=clf_name,params=params_dict[clf_name])</span><br><span class="line">      model = classifier.trainer(train_df=tmp_train_df,**SETUP_TRAINER,pred_flag=<span class="literal">True</span>,test_df=tmp_test_df,test_csv=test_path,save_path=save_path)</span><br></pre></td></tr></table></figure>
+
+<p>为了方便扩展，定义了一个专门的类<code>ML_Classifier</code>封装训练过程，文件命名为<code>cls_trainer.py</code>，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f1</span>(<span class="params">true,pred</span>):</span><br><span class="line">    <span class="keyword">return</span> f1_score(true,pred,average=<span class="string">&#x27;macro&#x27;</span>,zero_division=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">METRICS_CLS = &#123;</span><br><span class="line">  <span class="string">&#x27;Accuracy&#x27;</span>:<span class="string">&#x27;accuracy&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Recall&#x27;</span>:<span class="string">&#x27;recall&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Precision&#x27;</span>:<span class="string">&#x27;precision&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;F1&#x27;</span>:<span class="string">&#x27;f1&#x27;</span>,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ML_Classifier</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    Machine Learning Classifier for the classification</span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">    - clf_name, string, __all__ = [&#x27;random forest&#x27;]</span></span><br><span class="line"><span class="string">    - params_dict, dict, parameters setting of the specified classifer</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,clf_name=<span class="literal">None</span>,params=<span class="literal">None</span></span>): </span><br><span class="line">      <span class="built_in">super</span>(ML_Classifier,self).__init__()  </span><br><span class="line">      self.clf_name = clf_name</span><br><span class="line">      self.params = params</span><br><span class="line">      self.clf = self._get_clf()  </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">trainer</span>(<span class="params">self,train_df,target_key,random_state=<span class="number">21</span>,metric=<span class="literal">None</span>,k_fold=<span class="number">5</span>,pred_flag=<span class="literal">False</span>,\ test_df=<span class="literal">None</span>,test_csv=<span class="literal">None</span>,save_path=<span class="literal">None</span>,scale_flag=<span class="literal">False</span>,sub_col=<span class="literal">None</span>,id_name=<span class="literal">None</span></span>):</span><br><span class="line">        params = self.params</span><br><span class="line">        fea_list= [f <span class="keyword">for</span> f <span class="keyword">in</span> train_df.columns <span class="keyword">if</span> f != target_key]</span><br><span class="line">        <span class="built_in">print</span>(fea_list)</span><br><span class="line"></span><br><span class="line">        Y = np.asarray(train_df[target_key])</span><br><span class="line">        num_classes = <span class="built_in">len</span>(<span class="built_in">set</span>(Y))</span><br><span class="line">        X = np.asarray(train_df[fea_list])</span><br><span class="line">        test = np.asarray(test_df[fea_list])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> scale_flag:</span><br><span class="line">            X_len = X.shape[<span class="number">0</span>]</span><br><span class="line">            data_scaler = StandardScaler()</span><br><span class="line">            cat_data = np.concatenate([X,test],axis=<span class="number">0</span>)</span><br><span class="line">            cat_data= data_scaler.fit_transform(cat_data)</span><br><span class="line"></span><br><span class="line">            X = cat_data[:X_len]</span><br><span class="line">            test = cat_data[X_len:]</span><br><span class="line">      </span><br><span class="line">        kfold = KFold(n_splits=k_fold,shuffle=<span class="literal">True</span>,random_state=random_state)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(X)</span><br><span class="line">        <span class="built_in">print</span>(test)</span><br><span class="line">        <span class="built_in">print</span>(X.shape,test.shape)</span><br><span class="line">        test_score_list = []</span><br><span class="line">        predictions = []</span><br><span class="line">        predictions_prob = []</span><br><span class="line">        <span class="keyword">for</span> fold_num,(train_index,val_index) <span class="keyword">in</span> <span class="built_in">enumerate</span>(kfold.split(X)):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&#x27;***********fold <span class="subst">&#123;fold_num+<span class="number">1</span>&#125;</span> start!!***********&#x27;</span>)</span><br><span class="line">            x_train, x_val = X[train_index], X[val_index]</span><br><span class="line">            y_train, y_val = Y[train_index], Y[val_index]</span><br><span class="line">            model = GridSearchCV(estimator=self.clf,</span><br><span class="line">                                param_grid=params,</span><br><span class="line">                                cv=kfold,</span><br><span class="line">                                scoring=metric,</span><br><span class="line">                                refit=<span class="string">&#x27;F1&#x27;</span>,</span><br><span class="line">                                verbose=<span class="literal">True</span>,</span><br><span class="line">                                return_train_score=<span class="literal">True</span>)</span><br><span class="line">            model = model.fit(x_train,y_train)</span><br><span class="line"></span><br><span class="line">            best_score = model.best_score_</span><br><span class="line">            best_model = model.best_estimator_</span><br><span class="line">            train_pred = model.predict(x_train)</span><br><span class="line">            train_score = f1(y_train,train_pred)</span><br><span class="line">            test_pred = model.predict(x_val)</span><br><span class="line">            test_score = f1(y_val,test_pred)</span><br><span class="line">            test_score_list.append(test_score)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;F1 Evaluation:&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;fold &#123;&#125; Best score:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(fold_num + <span class="number">1</span>,best_score))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;fold &#123;&#125; Train score:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(fold_num + <span class="number">1</span>,train_score))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;fold &#123;&#125; Test score:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(fold_num + <span class="number">1</span>,test_score))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;fold &#123;&#125; Best parameter:&quot;</span>.<span class="built_in">format</span>(fold_num + <span class="number">1</span>))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> pred_flag <span class="keyword">and</span> test <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                pred = model.predict(test)</span><br><span class="line">                predictions.append(pred)</span><br><span class="line">                <span class="comment"># prob</span></span><br><span class="line">                pred_prob = model.predict_proba(test)</span><br><span class="line">                predictions_prob.append(pred_prob)</span><br><span class="line">        </span><br><span class="line">        final_result = []</span><br><span class="line">        vote_array = np.asarray(predictions).astype(<span class="built_in">int</span>)</span><br><span class="line">        final_result.extend([<span class="built_in">max</span>(<span class="built_in">list</span>(vote_array[:,i]),key=<span class="built_in">list</span>(vote_array[:,i]).count) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(vote_array.shape[<span class="number">1</span>])])</span><br><span class="line">        </span><br><span class="line">        prob_array = np.mean(predictions_prob,axis=<span class="number">0</span>) <span class="comment"># N*C</span></span><br><span class="line">        prob_final_result = np.argmax(prob_array,axis=<span class="number">1</span>).tolist() <span class="comment"># N</span></span><br><span class="line">        </span><br><span class="line">        test_df = pd.read_csv(test_csv,encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        pred_df = &#123;</span><br><span class="line">          sub_col[<span class="number">0</span>]:[case <span class="keyword">for</span> case <span class="keyword">in</span> test_df[id_name].values.tolist()]</span><br><span class="line">        &#125;</span><br><span class="line">        pred_df = pd.DataFrame(data=pred_df)</span><br><span class="line"></span><br><span class="line">        pred_df[sub_col[<span class="number">0</span>]] = test_df[id_name]</span><br><span class="line">        <span class="comment"># vote</span></span><br><span class="line">        pred_df[sub_col[<span class="number">1</span>]] = final_result</span><br><span class="line">        pred_df.to_csv(<span class="string">f&#x27;<span class="subst">&#123;save_path&#125;</span>/<span class="subst">&#123;self.clf_name&#125;</span>_vote_result.csv&#x27;</span>,index=<span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># prob</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_classes):</span><br><span class="line">            pred_df[<span class="string">f&#x27;prob_<span class="subst">&#123;<span class="built_in">str</span>(i)&#125;</span>&#x27;</span>] = prob_array[:,i].tolist()</span><br><span class="line">        pred_df[sub_col[<span class="number">1</span>]] = prob_final_result</span><br><span class="line">        pred_df.to_csv(<span class="string">f&#x27;<span class="subst">&#123;save_path&#125;</span>/<span class="subst">&#123;self.clf_name&#125;</span>_prob_result.csv&#x27;</span>,index=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">return</span> best_model</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_get_clf</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> self.clf_name == <span class="string">&#x27;random forest&#x27;</span>:</span><br><span class="line">            classifier = RandomForestClassifier(random_state=<span class="number">21</span>,bootstrap=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> classifier  </span><br></pre></td></tr></table></figure>
+
+<h3 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h3><p>测试发现，对正例使用<strong>0.4</strong>作为5折平均概率的分类边界要比默认的<strong>0.5</strong>要好一点，最终结果为<strong>0.9672</strong>，冲。</p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://shijun18.github.io/2022/06/30/202206/2022%20iFLYTEK%20AI-%E7%B3%96%E5%B0%BF%E7%97%85%E9%81%97%E4%BC%A0%E9%A3%8E%E9%99%A9%E6%A3%80%E6%B5%8B%E6%8C%91%E6%88%98%E8%B5%9B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8C%BB%E7%96%97AI/" rel="tag">医疗AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag">数据挖掘</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2022/06/26/202206/Hexo+Github%20Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Hexo+Github Pages搭建个人博客</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "9nOtWnfwr4pF8J2ktVrUzfbp-gzGzoHsz",
+    app_key: "AAcTXeOzo7yM5lYGUxs5J5RF",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022
+        <i class="ri-heart-fill heart_icon"></i> Shi Jun
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/logo.png" alt="Jun&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wxpay.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>
