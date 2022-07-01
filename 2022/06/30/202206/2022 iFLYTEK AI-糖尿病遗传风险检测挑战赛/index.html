@@ -152,7 +152,7 @@
 <h4 id="Step-2-特征构造"><a href="#Step-2-特征构造" class="headerlink" title="Step 2: 特征构造"></a>Step 2: 特征构造</h4><p>根据<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/9139ad6428160b4e767f5acfa1c7aa00b52a9dde.html">《中国2型糖尿病防治指南（2017年版）》</a>，糖尿病的诊断标准是具有典型糖尿病症状（烦渴多饮、多尿、多食、不明原因的体重下降）且随机静脉血浆葡萄糖≥11.1mmol/L或空腹静脉血浆葡萄糖≥7.0mmol/L或口服葡萄糖耐量试验（OGTT）负荷后2h血浆葡萄糖≥11.1mmol/L，另外参考<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8F%A3%E6%9C%8D%E8%91%A1%E8%90%84%E7%B3%96%E8%80%90%E9%87%8F%E8%AF%95%E9%AA%8C/10729512?fr=aladdin">百度百科</a>，知<code>口服耐糖量测试</code>（Oral Glucose Tolerance Test， OGTT）在临床中对糖尿病的诊断具有重要参考意义，因此构造以下特征：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;OGTT&gt;7.1&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">7.1</span>))</span><br><span class="line">data[<span class="string">&#x27;OGTT&gt;8.5&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">8.5</span>))</span><br><span class="line">data[<span class="string">&#x27;OGTT&gt;11.1&#x27;</span>] = data[<span class="string">&#x27;口服耐糖量测试&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">11.1</span>))</span><br></pre></td></tr></table></figure>
 
-<p>其中，另外,根据2013年临床统计分析结果，不同<code>BMI</code>的患病率有明显差异：$BMI&lt; 25kg/m^2 $者糖尿病患病率为 $7.8%$, $25\le BMI &lt; 30kg/m^2$者患病率为$15.4%$, $BMI \ge 30kg/m^2$者患病率为$21.2%$，构造以下特征：</p>
+<p>其中，另外,根据2013年临床统计分析结果，不同<code>BMI</code>的患病率有明显差异：$BMI&lt; 25kg/m^2 $者糖尿病患病率为 $7.8%$, 25$\le$BMI &lt; 30 $kg/m^2$者患病率为$15.4 %%$, BMI $\ge$ 30$kg/m^2$者患病率为$21.2%$，构造以下特征：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">&#x27;BMI&gt;25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">25</span>))</span><br><span class="line">data[<span class="string">&#x27;30&gt;BMI&gt;=25&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">25</span> <span class="keyword">and</span> x &lt; <span class="number">30</span>))</span><br><span class="line">data[<span class="string">&#x27;BMI&gt;=30&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt;= <span class="number">30</span>))</span><br><span class="line">data[<span class="string">&#x27;BMI&gt;50&#x27;</span>] = data[<span class="string">&#x27;体重指数&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="built_in">int</span>(x &gt; <span class="number">50</span>))</span><br></pre></td></tr></table></figure>
 
 <h3 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h3><p>作为Baseline，我选择了<code>随机森林</code>作为基础模型，使用5折交叉训练，参数配置如下：</p>
@@ -614,14 +614,7 @@
 </script>
 
 <!-- Katex -->
- 
-    
-        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
-        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
-        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
-        
-    
- 
+
 <!-- busuanzi  -->
  
 <script src="/js/busuanzi-2.3.pure.min.js"></script>
