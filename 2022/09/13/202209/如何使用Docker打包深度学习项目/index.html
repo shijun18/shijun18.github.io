@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+      <link rel="dns-prefetch" href="//cdn.bootcss.com" />
+      <link rel="dns-prefetch" href="//cdn.mathjax.org" />
+        
+      <meta name="description" content="Code Create Life." />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>如何使用Docker打包深度学习项目 |  Jun&#39;s Blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/logo.png" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-202209/如何使用Docker打包深度学习项目"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  如何使用Docker打包深度学习项目
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/09/13/202209/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Docker%E6%89%93%E5%8C%85%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%A1%B9%E7%9B%AE/" class="article-date">
+  <time datetime="2022-09-13T08:27:20.000Z" itemprop="datePublished">2022-09-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">8 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>对于没有深入了解或使用过Docker的人来说（比如我），Docker可能显得很复杂，经常容易混淆镜像、容器等概念，也弄不清其与虚拟机（Virtual Machine, VM）的区别。实际上，Docker 是一个非常好用的工具，特别是在做应用部署的时候。刚好，最近参加的几个算法比赛都要求使用Docker打包项目文件，借此机会我也好好学习了一下Docker技术的相关知识和使用方法，特此记录一下。</p>
+<span id="more"></span>
+<p><img src="https://docs.docker.com/engine/images/architecture.svg" alt="Docker 架构图"></p>
+<h3 id="Docker和容器"><a href="#Docker和容器" class="headerlink" title="Docker和容器"></a>Docker和容器</h3><p>结合<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/overview/">Docker的官方教程</a>以及各路大佬的讲解，可以知道Docker本身是一个<strong>容器引擎</strong>，用来管理和运行容器。那什么是容器呢？<strong>容器本质上就是加了隔离机制的进程而已</strong>，进程就不多说了，重点在于<strong>隔离</strong>上。举个例子，做过深度学习（Deep Learning, DL）研究的人都知道，安装Pytorch或Tensorflow的时候，最需要注意的就是匹配CUDA的版本。假设现在你需要<strong>同时</strong>运行两个DL项目，而这两个项目强依赖于不同的CUDA版本，这时候应该怎么办呢？引入容器就能优雅地解决这个问题，只需要利用Docker为不同的DL项目创建独立的容器，容器中包含项目运行所需的所有资源，如指定版本的CUDA，进而消除了跟其他项目之间依赖项的冲突，这里就体现了环境隔离的重要性。</p>
+<h3 id="镜像和容器"><a href="#镜像和容器" class="headerlink" title="镜像和容器"></a>镜像和容器</h3><p>官方解释：镜像是一个只读模板，其中包含创建 Docker 容器的说明，而容器是镜像的可运行实例。说了好像没完全说，不过指出了镜像和容器之间的关系：<strong>容器是基于镜像构建的</strong>。其实，在理解的时候可以类比为C++里面的类、对象等概念。镜像对应类的定义，是静态的，包含了所需的程序、库、资源以及配置等，用来启动和创建容器。<strong>值得注意的是：镜像不包含任何动态数据，其内容在构建之后也不会被改变。</strong>另外，镜像支持多级构建，比如可以在别人提供的基础镜像上，加入更多依赖项，创建自己的镜像，就好比继承一个基类后定义一个新类。容器作为镜像的实例化对象，是动态的，每个容器运行一个独立的应用程序。因此，在利用Docker运行一个程序时：首先拉取或者创建一个镜像，将程序运行所需的资源全部“塞”进这个镜像，然后基于该镜像创建和启动容器，指定程序就可以在容器中运行。</p>
+<h3 id="Docker和虚拟机"><a href="#Docker和虚拟机" class="headerlink" title="Docker和虚拟机"></a>Docker和虚拟机</h3><p>最常听到的说法：Docker是一种轻量级、进程级虚拟机。对虚拟机的使用很多人可能并不陌生，比如利用VMware之类的软件在Windows上安装Ubuntu虚拟机。值得注意的是，虚拟机的核心是<strong>模拟</strong>，模拟CPU，内存和各种硬件，因此还需要在其上安装操作系统才能使用。而容器的核心是<strong>隔离</strong>，Docker并不会运行一个独立的操作系统，而只是给进程提供了一种假象，使进程运行得就好像在一个独立的操作系统上。这也是为什么Docker被称为进程级、轻量级的虚拟机。下表从资源消耗等四个维度对比了传统虚拟机和Docker容器虚拟化的差异。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>传统虚拟机</th>
+<th>Docker容器虚拟化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>资源消耗</td>
+<td>传统虚拟机要具备独立的虚拟CPU、内存、操作系统,如果有10个虚拟机，则需要安装10个操作系统，虚拟出来10个CPU、内存等，因此造成大量的资源浪费</td>
+<td>容器可以运行相同的一个操作系统内核，让一个容器的消耗与一个进程一样</td>
+</tr>
+<tr>
+<td>启动</td>
+<td>虚拟机硬件需要初始化,需要启动时间</td>
+<td>没有虚拟机硬件初始化过程,开箱即用</td>
+</tr>
+<tr>
+<td>应用安装</td>
+<td>需要大量的安装包及安装过程,如下载完整镜像也非常耗费时间</td>
+<td>统一仓库拉取,结构简单,拉取速度快</td>
+</tr>
+<tr>
+<td>故障</td>
+<td>虚拟机内应用崩溃,理论上不会影响其它虚拟机以及上面运行的应用的,除非是硬件或者Hypervisor有Bug</td>
+<td>因为共用内核，只靠cgroup隔离，应用之间的隔离是不如虚拟机彻底的，如果某个应用运行时导致内核崩溃，所有的容器都会崩溃</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Docker打包DL项目"><a href="#Docker打包DL项目" class="headerlink" title="Docker打包DL项目"></a>Docker打包DL项目</h3><p>前面描述了Docker几个比较重要的概念，言归正传，实践中如何用Docker打包自己的DL项目呢？其实非常简单，下面对流程进行了大概梳理，(OS：Ubuntu 20.04)。</p>
+<ul>
+<li><p>Step 1: 安装<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/ubuntu/">Docker</a>和<a target="_blank" rel="noopener" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#%20docker">Nvidia-Docker</a></p>
+<p>参考官网教程即可，如果没有sudo权限，可以向管理员申请加入docker group，并取消sudo执行docker，后续命令执行就不需要sudo权限，管理员需要做如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="built_in">cat</span> /etc/group | grep docker</span><br><span class="line">$ sudo groupadd docker</span><br><span class="line">$ sudo gpasswd -a <span class="variable">$&#123;USER&#125;</span> docker</span><br><span class="line">$ sudo <span class="built_in">chmod</span> a+rw /var/run/docker.sock</span><br><span class="line">$ sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Step 2:  拉取基础镜像</p>
+<p>根据项目需要，从<a target="_blank" rel="noopener" href="https://hub.docker.com/">DockerHub</a>挑选并拉取合适的基础镜像，以本人的实际项目为例，原始开发环境为：Pytorch 1.11.0 / CUDA 11.3 / CUDNN 8。 因此，在挑选基础镜像时尽可能得去匹配这些项，选好后拉取下来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime</span><br></pre></td></tr></table></figure>
+<p>拉取下来后，查看已有镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY                      TAG                              IMAGE ID       CREATED         SIZE</span><br><span class="line">pytorch/pytorch                 1.11.0-cuda11.3-cudnn8-runtime   ca04e7f7c8e5   6 months ago    5.82GB</span><br></pre></td></tr></table></figure>
+<p>测试镜像，可以看到正常打印指定显卡信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --<span class="built_in">rm</span> --gpus <span class="string">&#x27;&quot;device=3&quot;&#x27;</span> pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime nvidia-smi</span><br><span class="line">Fri Sep 16 11:06:29 2022       </span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 465.19.01    Driver Version: 465.19.01    CUDA Version: 11.3     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|                               |                      |               MIG M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  NVIDIA Graphics...  On   | 00000000:E1:00.0 Off |                    0 |</span><br><span class="line">| N/A   30C    P0    40W / 300W |      0MiB / 81251MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">                                                                               </span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                                  |</span><br><span class="line">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span><br><span class="line">|        ID   ID                                                   Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Step 3:  创建自定义镜像</p>
+<p>通过编辑<code>Dockerfile</code>实现镜像定义。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> pytorch/pytorch:<span class="number">1.11</span>.<span class="number">0</span>-cuda11.<span class="number">3</span>-cudnn8-runtime</span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> . /</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /code</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install -r requirements.txt</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> python main.py</span></span><br><span class="line"><span class="comment"># CMD [&quot;python&quot;, &quot;main.py&quot;]</span></span><br></pre></td></tr></table></figure>
+<p><code>From</code>指定基础镜像，<code>ADD . /</code> 代表将当前目录所有文件添加到镜像的根目录下， <code>WORKDIR</code>指定默认的工作目录，即进入容器后的初始目录，<code>RUN</code>用来运行指定命令，如安装依赖包或者程序执行命令。<strong>注意：</strong>由于我选择的基础镜像已经有了conda，所以可以直接使用<code>pip install</code>安装依赖包，否则需要使用<code>RUN</code>自行安装conda或pip工具，<code>RUN</code>在执行多条命令时用<code>&amp;&amp;</code>连接。</p>
+<p>定义完成后，创建容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t IMAGE_NAME .</span><br></pre></td></tr></table></figure>
+<p>这里的<code>IMAGE_NAME</code>为自定义镜像名（我用的package），重新检查镜像列表，会看到新的镜像已被创建。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY                      TAG                              IMAGE ID       CREATED         SIZE</span><br><span class="line">package                         latest                           a3a4e8f3bbbc   2 weeks ago     17.7GB</span><br><span class="line">pytorch/pytorch                 1.11.0-cuda11.3-cudnn8-runtime   ca04e7f7c8e5   6 months ago    5.82GB</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Step 4: 启动容器</p>
+<p>按需配置显卡、内存等资源，启动容器，两种启动方式。</p>
+<p>交互式：<code>CONTAINER_NAME</code>为自定义容器名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --<span class="built_in">rm</span> --name CONTAINER_NAME --shm-size 8G -it --gpus <span class="string">&#x27;&quot;device=3&quot;&#x27;</span> package /bin/bash</span><br><span class="line">root@362c182ee05c:/code<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+<p>非交互式:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --<span class="built_in">rm</span> --name CONTAINER_NAME --shm-size 8G --gpus <span class="string">&#x27;&quot;device=3&quot;&#x27;</span> package</span><br></pre></td></tr></table></figure>
+<p><code>--rm</code>的作用是在容器程序执行完后自动删除该容器，不加该参数容器会一直存在。</p>
+<p>有时需要获取容器程序产生的数据，可以通过<strong>挂载数据卷</strong>的方式实现，将宿主机的目录映射到容器的指定位置，这样就可以将数据从容器中传输到宿主机。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --<span class="built_in">rm</span> --name CONTAINER_NAME --shm-size 8G --gpus <span class="string">&#x27;&quot;device=3&quot;&#x27;</span> -v /YOUR_PATH_TO_OUTPUT:/code/output package</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Step 5: 导出镜像</p>
+<p>容器测试完成后，将镜像导出用于发布或提交</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker save -o DOCKER_IMAGE.tar package:latest</span><br></pre></td></tr></table></figure>
+<p>至此，镜像制作、打包就完成了。</p>
+</li>
+</ul>
+<h3 id="一些重要的Docker命令"><a href="#一些重要的Docker命令" class="headerlink" title="一些重要的Docker命令"></a>一些重要的Docker命令</h3><p>删除容器，需要先停止容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br><span class="line">$ docker <span class="built_in">rm</span> CONTAINER_ID</span><br></pre></td></tr></table></figure>
+<p>容器启动停止</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker stop CONTAINER_NAME</span><br><span class="line">$ docker start CONTAINER_NAME</span><br></pre></td></tr></table></figure>
+<p>进入容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker <span class="built_in">exec</span> -it CONTAINER_NAME /bin/bash</span><br></pre></td></tr></table></figure>
+<p>删除镜像，需要先停止该镜像实例化的容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">$ docker rmi IMAGE_ID</span><br></pre></td></tr></table></figure>
+<p>导入镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker load -i DOCKER_IMAGE.tar</span><br></pre></td></tr></table></figure>
+<p>文件复制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker <span class="built_in">cp</span> /YOUR_PATH_TO_FILE CONTAINER_NAME:/</span><br></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/28300645/answer/585166942">如何通俗解释Docker是什么？</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44232093/article/details/124297427">传统虚拟机与Docker虚拟化技术的对比</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38257276/article/details/124052144">Docker打包深度学习项目</a></p>
+ 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          打赏
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://shijun18.github.io/2022/09/13/202209/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Docker%E6%89%93%E5%8C%85%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E9%A1%B9%E7%9B%AE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2022/06/30/202206/2022%20iFLYTEK%20AI-%E7%B3%96%E5%B0%BF%E7%97%85%E9%81%97%E4%BC%A0%E9%A3%8E%E9%99%A9%E6%A3%80%E6%B5%8B%E6%8C%91%E6%88%98%E8%B5%9B/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">2022 iFLYTEK AI-糖尿病遗传风险检测挑战赛</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.staticfile.org/valine/1.4.16/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "9nOtWnfwr4pF8J2ktVrUzfbp-gzGzoHsz",
+    app_key: "AAcTXeOzo7yM5lYGUxs5J5RF",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022
+        <i class="ri-heart-fill heart_icon"></i> Shi Jun
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/logo.png" alt="Jun&#39;s Blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wxpay.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>
