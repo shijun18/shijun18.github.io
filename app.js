@@ -64,10 +64,12 @@ const inferIcon = (item) => {
 
 const createLink = (item, className) => {
   const link = document.createElement("a");
-  link.href = item.url || "#";
+  const rawUrl = item.url || "#";
+  const href = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawUrl) ? `mailto:${rawUrl}` : rawUrl;
+  link.href = href;
   link.textContent = item.label || item.linkText || item.value || item.title;
   if (className) link.className = className;
-  if (item.url && item.url.startsWith("http")) {
+  if (href.startsWith("http")) {
     link.target = "_blank";
     link.rel = "noreferrer";
   }

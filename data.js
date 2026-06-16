@@ -54,7 +54,7 @@ window.siteContent = {
       avatar: "assets/profile.jpg"
     },
     links: [
-      { label: "Email", url: "shijun18@ustc.edu.cn", icon: "email" },
+      { label: "Email", url: "mailto:shijun18@ustc.edu.cn", icon: "email" },
       { label: "Google Scholar", url: "https://scholar.google.com.hk/citations?user=lgNttB8AAAAJ&hl=zh-CN", icon: "scholar" },
       { label: "ORCID", url: "https://orcid.org/0000-0002-9888-6238", icon: "orcid" },
       { label: "DBLP", url: "https://dblp.org/pid/31/626-7.html", icon: "dblp" },
@@ -549,7 +549,7 @@ window.siteContent = {
       avatar: "assets/profile.jpg"
     },
     links: [
-      { label: "Email", url: "shijun18@ustc.edu.cn", icon: "email" },
+      { label: "Email", url: "mailto:shijun18@ustc.edu.cn", icon: "email" },
       { label: "Google Scholar", url: "https://scholar.google.com.hk/citations?user=lgNttB8AAAAJ&hl=zh-CN", icon: "scholar" },
       { label: "ORCID", url: "https://orcid.org/0000-0002-9888-6238", icon: "orcid" },
       { label: "DBLP", url: "https://dblp.org/pid/31/626-7.html", icon: "dblp" },
