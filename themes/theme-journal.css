@@ -1,0 +1,23 @@
+:root {
+  --bg: #f7f4ed;
+  --surface: #fffdf8;
+  --surface-soft: #f4efe4;
+  --text: #29251e;
+  --muted: #6f675b;
+  --line: #ded5c6;
+  --accent: #8b4c24;
+  --accent-strong: #62351b;
+  --accent-soft: #f3e4d4;
+  --link: #7a3f1f;
+  --shadow: 0 18px 44px rgba(88, 67, 42, 0.12);
+}
+
+body {
+  font-family: Georgia, "Times New Roman", "Noto Serif SC", serif;
+}
+
+.profile-link,
+.tool-button,
+.theme-select {
+  border-radius: 3px;
+}

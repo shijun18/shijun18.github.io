@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shi Jun academic homepage.">
+  <title>Shi Jun | Academic Homepage</title>
+  <link rel="stylesheet" href="styles.css">
+  <link id="theme-style" rel="stylesheet" href="themes/theme-classic.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-home" viewBox="0 0 24 24">
+      <path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5z"/>
+    </symbol>
+    <symbol id="icon-biography" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M5 20a7 7 0 0 1 14 0"/>
+    </symbol>
+    <symbol id="icon-news" viewBox="0 0 24 24">
+      <path d="M4 5h12a2 2 0 0 1 2 2v11H6a2 2 0 0 1-2-2z"/>
+      <path d="M18 9h2v7a2 2 0 0 1-2 2z"/>
+      <path d="M7 9h7M7 12h7M7 15h4"/>
+    </symbol>
+    <symbol id="icon-research" viewBox="0 0 24 24">
+      <circle cx="10.5" cy="10.5" r="5.5"/>
+      <path d="m15 15 5 5M10.5 7v7M7 10.5h7"/>
+    </symbol>
+    <symbol id="icon-medicine" viewBox="0 0 24 24">
+      <path d="M12 21s-7-4.3-7-10a4.2 4.2 0 0 1 7-3.1A4.2 4.2 0 0 1 19 11c0 5.7-7 10-7 10z"/>
+      <path d="M12 9v6M9 12h6"/>
+    </symbol>
+    <symbol id="icon-science" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M3.5 12h17M12 3c2.4 2.4 3.6 5.4 3.6 9S14.4 18.6 12 21M12 3c-2.4 2.4-3.6 5.4-3.6 9S9.6 18.6 12 21"/>
+    </symbol>
+    <symbol id="icon-system" viewBox="0 0 24 24">
+      <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+      <path d="M4 9h3M4 15h3M17 9h3M17 15h3M9 4v3M15 4v3M9 17v3M15 17v3"/>
+      <path d="M10 10h4v4h-4z"/>
+    </symbol>
+    <symbol id="icon-publications" viewBox="0 0 24 24">
+      <path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/>
+      <path d="M8 4v13a3 3 0 0 0 3 3M9 8h5M9 11h5"/>
+    </symbol>
+    <symbol id="icon-projects" viewBox="0 0 24 24">
+      <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/>
+    </symbol>
+    <symbol id="icon-apps" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="6" height="6" rx="1.5"/>
+      <rect x="14" y="4" width="6" height="6" rx="1.5"/>
+      <rect x="4" y="14" width="6" height="6" rx="1.5"/>
+      <rect x="14" y="14" width="6" height="6" rx="1.5"/>
+    </symbol>
+    <symbol id="icon-services" viewBox="0 0 24 24">
+      <path d="M5 5h14v14H5z"/>
+      <path d="M8 9h8M8 12h8M8 15h5"/>
+      <path d="m16 4 1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>
+    </symbol>
+    <symbol id="icon-location" viewBox="0 0 24 24">
+      <path d="M12 21s7-5.2 7-11a7 7 0 0 0-14 0c0 5.8 7 11 7 11z"/>
+      <circle cx="12" cy="10" r="2.5"/>
+    </symbol>
+    <symbol id="icon-orcid" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9 8v8M12 8h2.2a3.8 3.8 0 0 1 0 7.6H12z"/>
+    </symbol>
+    <symbol id="icon-dblp" viewBox="0 0 24 24">
+      <path d="M5 4h5.5a4 4 0 0 1 0 8H5zM5 12h7a4 4 0 0 1 0 8H5z"/>
+      <path d="M5 4v16"/>
+    </symbol>
+    <symbol id="icon-lab" viewBox="0 0 24 24">
+      <path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/>
+      <path d="M7.5 16h9"/>
+    </symbol>
+    <symbol id="icon-education" viewBox="0 0 24 24">
+      <path d="m3 8 9-4 9 4-9 4z"/>
+      <path d="M7 10.5V15c0 1.7 2.2 3 5 3s5-1.3 5-3v-4.5M21 8v7"/>
+    </symbol>
+    <symbol id="icon-awards" viewBox="0 0 24 24">
+      <path d="M8 4h8v5a4 4 0 0 1-8 0z"/>
+      <path d="M6 5H4v2a4 4 0 0 0 4 4M18 5h2v2a4 4 0 0 1-4 4M12 13v4M9 20h6M10 17h4"/>
+    </symbol>
+    <symbol id="icon-contact" viewBox="0 0 24 24">
+      <path d="M4 6h16v12H4z"/>
+      <path d="m4 7 8 6 8-6"/>
+    </symbol>
+    <symbol id="icon-email" viewBox="0 0 24 24">
+      <path d="M4 6h16v12H4z"/>
+      <path d="m4 7 8 6 8-6"/>
+    </symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24">
+      <path d="M12 3a9 9 0 0 0-3 17c.45.08.6-.2.6-.43v-1.5c-2.45.54-2.96-1.03-2.96-1.03-.4-1.03-.98-1.3-.98-1.3-.8-.55.06-.54.06-.54.9.06 1.37.92 1.37.92.78 1.35 2.06.96 2.56.73.08-.57.31-.96.56-1.18-1.96-.22-4.02-.98-4.02-4.36 0-.96.34-1.75.92-2.37-.1-.22-.4-1.12.08-2.34 0 0 .76-.24 2.48.9A8.6 8.6 0 0 1 12 7.2c.77 0 1.54.1 2.26.3 1.72-1.14 2.48-.9 2.48-.9.48 1.22.18 2.12.09 2.34.57.62.91 1.4.91 2.37 0 3.39-2.07 4.13-4.04 4.35.32.27.6.8.6 1.62v2.4c0 .24.16.52.61.43A9 9 0 0 0 12 3z"/>
+    </symbol>
+    <symbol id="icon-blog" viewBox="0 0 24 24">
+      <path d="M6 4h9l3 3v13H6z"/>
+      <path d="M14 4v4h4M8.5 11h7M8.5 14h7M8.5 17H13"/>
+    </symbol>
+    <symbol id="icon-scholar" viewBox="0 0 24 24">
+      <path d="m3 8.5 9-4.5 9 4.5-9 4.5z"/>
+      <path d="M6 11v4.5c1.4 1.5 3.5 2.3 6 2.3s4.6-.8 6-2.3V11"/>
+    </symbol>
+    <symbol id="icon-cv" viewBox="0 0 24 24">
+      <path d="M6 3h9l3 3v15H6z"/>
+      <path d="M14 3v4h4M9 11h6M9 14h6M9 17h4"/>
+    </symbol>
+    <symbol id="icon-link" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1.2 1.2"/>
+      <path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1.2-1.2"/>
+    </symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24">
+      <path d="M8 5h11v11M19 5 9 15"/>
+      <path d="M18 18v1H5V6h1"/>
+    </symbol>
+  </svg>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#home" data-text="profile.name">Shi Jun</a>
+      <div class="nav-links" data-nav></div>
+      <div class="toolbar" aria-label="Page settings">
+        <button class="tool-button" type="button" data-lang-toggle>中文 / EN</button>
+        <select class="theme-select" data-theme-select aria-label="Theme"></select>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home" class="page-shell">
+    <aside class="profile-panel" aria-label="Profile">
+      <img class="avatar" data-src="profile.avatar" data-alt="profile.name" src="" alt="">
+      <h1 data-text="profile.name"></h1>
+      <p class="name-cn" data-text="profile.nameCn"></p>
+      <p class="position" data-text="profile.title"></p>
+      <p class="institution" data-text="profile.affiliation"></p>
+      <p class="location"><svg class="link-icon" aria-hidden="true" focusable="false"><use href="#icon-location"></use></svg><span data-text="profile.location"></span></p>
+      <div class="profile-links" data-list="links"></div>
+    </aside>
+
+    <article class="content-column">
+      <section id="biography" class="content-section biography-section">
+        <h2 data-label="biography"></h2>
+        <div class="summary" data-paragraphs="hero.summary"></div>
+      </section>
+
+      <section id="research" class="content-section">
+        <h2 data-label="research"></h2>
+        <ul class="topic-list" data-list="research"></ul>
+      </section>
+
+      <aside class="recruiting-note" data-paragraphs="recruiting"></aside>
+
+      <section id="news" class="content-section">
+        <h2 data-label="news"></h2>
+        <ul class="news-list" data-list="news"></ul>
+      </section>
+
+      <section id="publications" class="content-section">
+        <h2 data-label="publications"></h2>
+        <div class="publication-groups" data-list="publications"></div>
+      </section>
+
+      <section id="projects" class="content-section">
+        <h2 data-label="projects"></h2>
+        <ul class="compact-list project-compact-list" data-list="projects"></ul>
+      </section>
+
+      <section id="apps" class="content-section">
+        <h2 data-label="apps"></h2>
+        <div class="app-grid" data-list="apps"></div>
+      </section>
+
+      <section id="services" class="content-section">
+        <h2 data-label="services"></h2>
+        <ul class="compact-list" data-list="services"></ul>
+      </section>
+
+      <section id="education" class="content-section">
+        <h2 data-label="education"></h2>
+        <ol class="timeline-list" data-list="education"></ol>
+      </section>
+
+      <section id="awards" class="content-section">
+        <h2 data-label="awards"></h2>
+        <ul class="compact-list" data-list="awards"></ul>
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span data-text="meta.year"></span> <span data-text="profile.name"></span>. <span data-text="meta.copyright"></span></span>
+      <span><span data-text="meta.updatedLabel"></span>: <span data-text="meta.updated"></span></span>
+      <span><span data-text="meta.viewsLabel"></span>: <span data-visit-count></span></span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,21 @@
+:root {
+  --bg: #f7f8f3;
+  --surface: #ffffff;
+  --surface-soft: #f0f5ec;
+  --text: #24302a;
+  --muted: #647268;
+  --line: #d8e0d5;
+  --accent: #557b2f;
+  --accent-strong: #36571d;
+  --accent-soft: #e9f3df;
+  --link: #356f80;
+  --shadow: 0 18px 44px rgba(46, 71, 38, 0.1);
+}
+
+.profile-panel {
+  border-top: 4px solid var(--accent);
+}
+
+.content-section h2 {
+  color: var(--accent-strong);
+}

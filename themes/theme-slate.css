@@ -1,0 +1,25 @@
+:root {
+  --bg: #111827;
+  --surface: #182231;
+  --surface-soft: #202c3d;
+  --text: #eef2f7;
+  --muted: #aab6c5;
+  --line: #2d3b4f;
+  --accent: #7dd3fc;
+  --accent-strong: #bae6fd;
+  --accent-soft: #0f2c3d;
+  --link: #93c5fd;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+body {
+  background: var(--bg);
+}
+
+.site-header {
+  background: rgba(24, 34, 49, 0.94);
+}
+
+.avatar {
+  border-color: #3b5068;
+}
