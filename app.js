@@ -11,14 +11,6 @@ const getContent = () => allContent[state.language] || allContent[config.default
 const getValue = (path) =>
   path.split(".").reduce((value, key) => (value ? value[key] : undefined), getContent());
 
-const applyVisitStatFallback = () => {
-  document.querySelectorAll("[data-stat-value]").forEach((element) => {
-    if (!element.textContent.trim() || element.textContent.trim() === "...") {
-      element.textContent = "--";
-    }
-  });
-};
-
 const getLastUpdatedDate = () => {
   const modified = new Date(document.lastModified);
   if (Number.isNaN(modified.getTime())) return getValue("meta.updated") || "";
@@ -27,6 +19,28 @@ const getLastUpdatedDate = () => {
   const month = String(modified.getMonth() + 1).padStart(2, "0");
   const day = String(modified.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+};
+
+const revealLoadedVisitStats = () => {
+  const containers = Array.from(document.querySelectorAll("[data-stat-container]"));
+  if (!containers.length) return true;
+
+  return containers.every((container) => {
+    const value = container.querySelector("[data-stat-value]");
+    const hasCount = /^\d+$/.test(value?.textContent.trim() || "");
+    if (hasCount) container.hidden = false;
+    return hasCount;
+  });
+};
+
+const watchVisitStats = () => {
+  let attempts = 0;
+  const timer = window.setInterval(() => {
+    attempts += 1;
+    if (revealLoadedVisitStats() || attempts >= 40) {
+      window.clearInterval(timer);
+    }
+  }, 500);
 };
 
 const createIcon = (name, className = "icon") => {
@@ -497,4 +511,4 @@ document.querySelector("[data-theme-select]").addEventListener("change", (event)
 renderThemeOptions();
 applyTheme();
 renderPage();
-window.setTimeout(applyVisitStatFallback, 5000);
+watchVisitStats();

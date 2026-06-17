@@ -775,6 +775,10 @@ html[lang="zh-CN"] .research-module .module-points li {
   white-space: nowrap;
 }
 
+.visit-stat[hidden] {
+  display: none !important;
+}
+
 @media (max-width: 900px) {
   .nav {
     grid-template-columns: 1fr;
