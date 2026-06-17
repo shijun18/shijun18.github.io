@@ -434,7 +434,10 @@ const renderPage = () => {
   renderLanguageButton();
 
   document.querySelectorAll("[data-text]").forEach((element) => {
-    element.textContent = getValue(element.dataset.text) || "";
+    const value = getValue(element.dataset.text);
+    if (value !== undefined && value !== null) {
+      element.textContent = value;
+    }
   });
 
   document.querySelectorAll("[data-label]").forEach((element) => {
