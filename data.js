@@ -20,7 +20,8 @@ window.siteContent = {
       copyright: "版权所有。",
       updatedLabel: "最后更新",
       updated: "2026-06-16",
-      viewsLabel: "访问计数"
+      viewsLabel: "访问量",
+      visitorsLabel: "访客数"
     },
     labels: {
       biography: "个人简介",
@@ -515,7 +516,8 @@ window.siteContent = {
       copyright: "All rights reserved.",
       updatedLabel: "Last updated",
       updated: "2026-06-16",
-      viewsLabel: "Visits"
+      viewsLabel: "Page views",
+      visitorsLabel: "Visitors"
     },
     labels: {
       biography: "Biography",

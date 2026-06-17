@@ -6,17 +6,6 @@ const state = {
   theme: localStorage.getItem("site-theme") || config.defaultTheme
 };
 
-const visitCount = (() => {
-  try {
-    const key = "site-local-visit-count";
-    const next = (Number.parseInt(localStorage.getItem(key), 10) || 0) + 1;
-    localStorage.setItem(key, String(next));
-    return next;
-  } catch {
-    return 1;
-  }
-})();
-
 const getContent = () => allContent[state.language] || allContent[config.defaultLanguage];
 
 const getValue = (path) =>
@@ -438,10 +427,6 @@ const renderPage = () => {
 
   document.querySelectorAll("[data-text]").forEach((element) => {
     element.textContent = getValue(element.dataset.text) || "";
-  });
-
-  document.querySelectorAll("[data-visit-count]").forEach((element) => {
-    element.textContent = String(visitCount);
   });
 
   document.querySelectorAll("[data-label]").forEach((element) => {

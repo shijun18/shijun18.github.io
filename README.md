@@ -10,7 +10,7 @@ This repository hosts the personal academic homepage of **Jun Shi**. It is a lig
 - Collapsible yearly news archive and publication groups
 - Multiple visual themes
 - Local profile image support
-- Simple footer with copyright, last update date, and local visit count
+- Simple footer with copyright, last update date, and real visit statistics
 
 ## File Structure
 
@@ -167,4 +167,4 @@ Folder: /root
 
 ## Notes
 
-The visit counter is stored locally in the visitor's browser via `localStorage`. It is suitable for a lightweight static homepage. For global visit statistics, use a third-party analytics service.
+The visit counter uses Busuanzi (`busuanzi.ibruce.info`) to provide real site-wide page views and visitor statistics for this static homepage. The numbers load only after the page is published online or previewed with network access.
