@@ -19,6 +19,16 @@ const applyVisitStatFallback = () => {
   });
 };
 
+const getLastUpdatedDate = () => {
+  const modified = new Date(document.lastModified);
+  if (Number.isNaN(modified.getTime())) return getValue("meta.updated") || "";
+
+  const year = modified.getFullYear();
+  const month = String(modified.getMonth() + 1).padStart(2, "0");
+  const day = String(modified.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const createIcon = (name, className = "icon") => {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
@@ -438,6 +448,10 @@ const renderPage = () => {
     if (value !== undefined && value !== null) {
       element.textContent = value;
     }
+  });
+
+  document.querySelectorAll("[data-last-updated]").forEach((element) => {
+    element.textContent = getLastUpdatedDate();
   });
 
   document.querySelectorAll("[data-label]").forEach((element) => {

@@ -10,7 +10,7 @@ This repository hosts the personal academic homepage of **Jun Shi**. It is a lig
 - Collapsible yearly news archive and publication groups
 - Multiple visual themes
 - Local profile image support
-- Simple footer with copyright, last update date, and real visit statistics
+- Simple footer with copyright, automatic last update date, and real visit statistics
 
 ## File Structure
 
@@ -48,7 +48,7 @@ The main sections are:
 - `services`: professional services
 - `education`: education and work experience
 - `awards`: honors and awards
-- `meta`: footer, copyright, last updated date
+- `meta`: footer labels, copyright, and fallback last updated date
 
 English and Chinese content are stored separately:
 
