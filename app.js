@@ -11,6 +11,14 @@ const getContent = () => allContent[state.language] || allContent[config.default
 const getValue = (path) =>
   path.split(".").reduce((value, key) => (value ? value[key] : undefined), getContent());
 
+const applyVisitStatFallback = () => {
+  document.querySelectorAll("[data-stat-value]").forEach((element) => {
+    if (!element.textContent.trim() || element.textContent.trim() === "...") {
+      element.textContent = "--";
+    }
+  });
+};
+
 const createIcon = (name, className = "icon") => {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
@@ -472,3 +480,4 @@ document.querySelector("[data-theme-select]").addEventListener("change", (event)
 renderThemeOptions();
 applyTheme();
 renderPage();
+window.setTimeout(applyVisitStatFallback, 5000);
