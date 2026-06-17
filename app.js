@@ -27,7 +27,7 @@ const revealLoadedVisitStats = () => {
 
   return containers.every((container) => {
     const value = container.querySelector("[data-stat-value]");
-    const hasCount = /^\d+$/.test(value?.textContent.trim() || "");
+    const hasCount = /^(?:\d+(?:\.\d+)?[KWE]?|\d+)$/.test(value?.textContent.trim() || "");
     if (hasCount) container.hidden = false;
     return hasCount;
   });
