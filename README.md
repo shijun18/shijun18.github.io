@@ -167,4 +167,4 @@ Folder: /root
 
 ## Notes
 
-The visit counter uses Busuanzi (`busuanzi.ibruce.info`) to provide real site-wide page views and visitor statistics for this static homepage. The numbers load only after the page is published online or previewed with network access.
+The visit counter uses the official Busuanzi V3 script (`cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js`) to provide real site-wide page views and visitor statistics for this static homepage. The footer displays site PV (`busuanzi_site_pv`) and site UV (`busuanzi_site_uv`) after the statistics script loads.
