@@ -577,12 +577,14 @@ window.siteContent = {
       { date: "2026-04", text: "Congratulations to Tiantong Wang (Ph.D. student) on the acceptance of Clore by the IEEE Engineering in Medicine and Biology Society Annual International Conference (EMBC 2026)!" },
       { date: "2026-04", text: "Congratulations to Mingchao Li (M.S. student) on the acceptance of Flow-PET by the IEEE Engineering in Medicine and Biology Society Annual International Conference (EMBC 2026)!" },
       { date: "2026-01", text: "Congratulations to Yue Dai (M.S. student) on the acceptance of LoPr by the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP 2026)!" },
+      
       { date: "2025-06", text: "Congratulations on the acceptance of our survey paper by the 30th Anniversary Special Issue of the Journal of Image and Graphics, where it was selected as an excellent paper!" },
       { date: "2025-04", text: "Congratulations to Bingxun Wang (M.S. student) on the acceptance of Dual-Mamba by the IEEE Engineering in Medicine and Biology Society Annual International Conference (EMBC 2025)!" },
       { date: "2025-04", text: "Congratulations on the acceptance of our collaborative work Wenhai by Nature Communications (2025)!" },
       { date: "2025-01", text: "Congratulations to Liang Qiao (Ph.D. student) on the acceptance of Pruner by the ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS 2025)!" },
       { date: "2025-01", text: "Congratulations to Yida Li (M.S. student) on the acceptance of Carver by the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP 2025)!" },
       { date: "2025-01", text: "Congratulations to Minfan Zhao (Ph.D. student) on the acceptance of PromptSeg by the IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP 2025)!" },
+      
       { date: "2024-06", text: "Congratulations on the acceptance of our collaborative work by The Lancet Oncology (2024)!" },
       { date: "2024-06", text: "Congratulations on the acceptance of our research work by the Journal of Applied Clinical Medical Physics (2024)!" },
       { date: "2024-05", text: "Congratulations on the acceptance of our research work by Physica Medica (2024)!" },
