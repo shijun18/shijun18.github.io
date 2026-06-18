@@ -73,6 +73,7 @@ window.siteContent = {
       "欢迎自驱力强、勤奋踏实、善于沟通、对技术探索和科学研究充满热情的本科生、研究生同学加入 ACSA 实验室 AISC 小组！"
     ],
     news: [
+      { date: "2026-06", text: "祝贺李昊青（博士生）的研究工作被 European Conference on Computer Vision (ECCV 2026)接收！" },
       { date: "2026-06", text: "祝贺李昊青（博士生）的研究工作DCLDs-RAG被 International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2026)接收！" },
       { date: "2026-06", text: "祝贺贾骐玮（本科生）的研究工作被 International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2026)接收！" },
       { date: "2026-05", text: "祝贺王朝晖（博士生）的研究工作RVDeformer被 IEEE Transactions on Medical Imaging (TMI 2026)接收！" },
@@ -569,6 +570,7 @@ window.siteContent = {
       "Self-motivated, diligent, and communicative undergraduate and graduate students who are passionate about technological exploration and scientific research are warmly welcome to join the AISC group at ACSA Lab."
     ],
     news: [
+      { date: "2026-06", text: "Congratulations to Haoqing Li (Ph.D. student) on the acceptance of DCLDs-RAG by the European Conference on Computer Vision (ECCV 2026)!" },
       { date: "2026-06", text: "Congratulations to Haoqing Li (Ph.D. student) on the acceptance of DCLDs-RAG by the International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2026)!" },
       { date: "2026-06", text: "Congratulations to Qiwei Jia (undergraduate student) on the acceptance of the research work by the International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI 2026)!" },
       { date: "2026-05", text: "Congratulations to Zhaohui Wang (Ph.D. student) on the acceptance of RVDeformer by IEEE Transactions on Medical Imaging (TMI 2026)!" },
