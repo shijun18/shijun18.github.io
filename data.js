@@ -138,6 +138,14 @@ window.siteContent = {
         open: true,
         items: [
           {
+            tag: "ECCV 2026",
+            authors: "Haoqing Li, Jun Shi*, Mingchao Li, Zehua Zhu, Jia Qiwei, Jiong Shi, Hong An",
+            title: "Spectral Consistent Flow for One-step 3D Medical Image Translation",
+            venue: "European Conference on Computer Vision",
+            year: "2026",
+            links: [{ label: "Source", url: "https://acsa.ustc.edu.cn/people/shijun/" }]
+          },
+          {
             tag: "MICCAI 2026",
             authors: "Haoqing Li, Jun Shi*, Xianmeng Chen, Qiwei Jia, Rui Wang, Yating Peng, Li Gao, Qianyi Chen, Hong An, Ruoyun Ouyang, Xiaowen Hu",
             title: "DCLDs-RAG: Evidence-Grounded Multimodal Retrieval-Augmented Generation for Diffuse Cystic Lung Diseases Diagnosis",
@@ -634,6 +642,14 @@ window.siteContent = {
         icon: "publications",
         open: true,
         items: [
+          {
+            tag: "ECCV 2026",
+            authors: "Haoqing Li, Jun Shi*, Mingchao Li, Zehua Zhu, Jia Qiwei, Jiong Shi, Hong An",
+            title: "Spectral Consistent Flow for One-step 3D Medical Image Translation",
+            venue: "European Conference on Computer Vision",
+            year: "2026",
+            links: [{ label: "Source", url: "https://acsa.ustc.edu.cn/people/shijun/" }]
+          },
           {
             tag: "MICCAI 2026",
             authors: "Haoqing Li, Jun Shi*, Xianmeng Chen, Qiwei Jia, Rui Wang, Yating Peng, Li Gao, Qianyi Chen, Hong An, Ruoyun Ouyang, Xiaowen Hu",
